@@ -42,7 +42,7 @@ class AudioFormatDescription(object):
         self._get_bitrates()
 
     def _get_bitrates(self):
-        self.bitrates = [bitrate.strip() for bitrate in check_output(['say', '--file-format', self.id, '--bit-rate', '?']).split('\n') if bitrate]
+        self.bitrates = [bitrate.strip() for bitrate in check_output(['say', '--file-format', self.id, '--bit-rate', '?']).decode('utf-8').split('\n') if bitrate]
 
 
 class AudioFormat(object):
@@ -87,18 +87,18 @@ class Synthesizer:
 
     def _list_devices(self):
         self.devices = []
-        for line in [line for line in check_output(['say', '-a', '?']).split('\n') if line]:
+        for line in [line for line in check_output(['say', '-a', '?']).decode('utf-8').split('\n') if line]:
             self.devices.append(AudioDevice(line))
 
     def _list_formats(self):
         self.formats = []
-        for line in [line for line in check_output(['say', '--file-format', '?']).split('\n') if line]:
+        for line in [line for line in check_output(['say', '--file-format', '?']).decode('utf-8').split('\n') if line]:
             line = line.strip()
             self.formats.append(AudioFormatDescription(line))
 
     def _list_voices(self):
         self.voices = []
-        for line in [line for line in check_output(['say', '-v', '?']).split('\n') if line]:
+        for line in [line for line in check_output(['say', '-v', '?']).decode('utf-8').split('\n') if line]:
             self.voices.append(Voice(line))
 
     def _prepared_cmd(self):
@@ -142,3 +142,8 @@ class Synthesizer:
 
     def talk(self):
         call(self._prepared_cmd())
+
+
+if __name__ == '__main__':
+    speaker = Synthesizer(voice='Alex', device='Built-in', text="I'm the Python macos_speech module")
+    speaker.talk()

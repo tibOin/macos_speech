@@ -11,6 +11,7 @@ setup(name='macos_speech',
       version='0.1a',
       description='Leverage the macOS `say` command into you scripts',
       long_description=readme(),
+      long_description_content_type="text/markdown",
       classifiers=[
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: MIT License',

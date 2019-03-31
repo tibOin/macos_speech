@@ -9,7 +9,7 @@ With the Python macos_speech package you can do it in a pythonic way. Easy and z
 
 #### Requirements
 macOS 10.x or for oldest OS X <br>
-For now, this package only works on Python >= 2.6 and Python >= 3.6.x <br>
+For now, this package only works on Python >= 2.6 but not on Python 3.x. <br>
 Only tested on Python 2.7.10.
 
 #### Basic usage
@@ -51,9 +51,9 @@ print '''Output file possible formats:
 ID    NAME    FILE_EXT    DATA_FORMATS    BIT_RATES
 '''
 for format in speaker.formats:
-  print '{} {} ({}) [{}] [{}]'.format(format.id, format.name,
-                                      ','.join(format.exts),
-                                      ','.join(format.formats),
+  print '{} {} ({}) [{}] [{}]'.format(format.id, format.name, 
+                                      ','.join(format.exts), 
+                                      ','.join(format.formats), 
                                       ','.join(format.bitrates))
 
 ```
@@ -73,7 +73,7 @@ synthe.formats
 
 # File IO (takes absolute pathes strings)
 synthe.infile  # A file containing text to say (mutually exclusive with self.text - high priority)
-synthe.outfile # The output audio file (default should be 'output.aiff'
+synthe.outfile # The output audio file (default should be 'output.aiff' 
                # but you can specify file and data formats)
 
 # Simple configs (takes strings)
@@ -87,6 +87,6 @@ synthe.format  # The audio output file/data format : macos_speech.AudioFormat
 
 synthe.device  # The audio output device           : macos_speech.AudioDevice
                # (Only used if no self.outfile)
-
+               
 synthe.voice   # The voice to use                  : macos_speech.Voice
 ```

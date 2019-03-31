@@ -8,7 +8,7 @@ def readme():
         return f.read()
 
 setup(name='macos_speech',
-      version='0.1a',
+      version='1.0.0',
       description='Leverage the macOS `say` command into you scripts',
       long_description=readme(),
       long_description_content_type="text/markdown",
@@ -19,7 +19,7 @@ setup(name='macos_speech',
       ],
       keywords='macos, say, speech synthesis',
       url='https://github.com/tibOin/macos_speech/',
-      author='chalios',
+      author='tibOin',
       author_email='tiboin@protonmail.com',
       license='MIT',
       packages=['macos_speech'],

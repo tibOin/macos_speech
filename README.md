@@ -10,7 +10,7 @@ With the Python macos_speech package you can do it in a pythonic way. Easy and z
 #### Requirements
 macOS 10.x or for oldest OS X <br>
 For now, this package only works on Python >= 2.6 and Python >= 3.6.x <br>
-Only tested on Python 2.7.10.
+Only tested on Python 2.7.10 and 3.7.2.
 
 #### Basic usage
 ```python
@@ -86,7 +86,9 @@ synthe.format  # The audio output file/data format : macos_speech.AudioFormat
                # (Works only with self.outfile populated)
 
 synthe.device  # The audio output device           : macos_speech.AudioDevice
+               #                                 (or 'name' or 'id' on Python 3)
                # (Only used if no self.outfile)
 
 synthe.voice   # The voice to use                  : macos_speech.Voice
+               #                                   (or 'name' on Python 3) 
 ```

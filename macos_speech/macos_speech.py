@@ -60,10 +60,10 @@ class Synthesizer:
         self._list_voices()
 
         # Init all to None
-        self.voice      = voice
+        self._voice      = voice
         self.infile     = infile
         self.outfile    = outfile
-        self.device     = device
+        self._device     = device
         self.rate       = rate
         self.format     = format
         self.quality    = quality
@@ -139,6 +139,38 @@ class Synthesizer:
             raise SpeechError("Synthesizer is missing text to say... Please provide either via `say(text='your text')`, Synthesiser.text or Synthesiser.infile properties.")
 
         return cmd.split(' ')
+
+    @property
+    def voice(self):
+        return self._voice
+
+    @voice.setter
+    def voice(self, name):
+        if type(name) == Voice:
+            self._voice = name
+        else:
+            for voice in self.voices:
+                if name in voice.name:
+                    self._voice = voice
+
+    @property
+    def device(self):
+        return self._device
+
+    @device.setter
+    def device(self, string):
+        if type(string) == AudioDevice:
+            self._device = string
+        else:
+            try:
+                int(string)
+                for device in self.devices:
+                    if device.id == string:
+                        self._device = device
+            except:
+                for device in self.devices:
+                    if string in device.name:
+                        self._device = device
 
     def talk(self):
         call(self._prepared_cmd())

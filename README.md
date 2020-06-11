@@ -18,7 +18,7 @@ pip install .
 #### Requirements
 macOS 10.x or for oldest OS X <br>
 For now, this package only works on Python >= 2.6 and Python >= 3.6.x <br>
-Only tested on Python 2.7.10 and 3.7.2.
+Only tested on Python 2.7.10 and >= 3.7.2.
 
 #### Basic usage
 ```python

@@ -8,7 +8,7 @@ def readme():
         return f.read()
 
 setup(name='macos_speech',
-      version='1.0b1',
+      version='1.0.1b',
       description='Leverage the macOS `say` command into you scripts',
       long_description=readme(),
       long_description_content_type="text/markdown",

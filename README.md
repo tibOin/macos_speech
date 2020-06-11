@@ -5,7 +5,10 @@ With the Python macos_speech package you can do it in a pythonic way. Easy and z
 ### Getting Started:
 
 #### Installation
-~`pip install macos_speech`~
+`pip install macos_speech`
+
+or
+
 ```
 git clone https://github.com/tibOin/macos_speech.git
 cd macos_speech
@@ -19,7 +22,7 @@ Only tested on Python 2.7.10 and 3.7.2.
 
 #### Basic usage
 ```python
-from macos_speech import Synthesizer # or from macos_speech.macos_speech import Synthesizer
+from macos_speech import Synthesizer
 
 speaker = Synthesizer(voice='Alex', device='Built-in')
 
@@ -95,5 +98,5 @@ synthe.device  # The audio output device           : macos_speech.AudioDevice
                # (Only used if no self.outfile)
 
 synthe.voice   # The voice to use                  : macos_speech.Voice
-               #                                   (or 'name' on Python 3) 
+               #                                   (or 'name' on Python 3)
 ```

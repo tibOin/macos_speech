@@ -32,6 +32,10 @@ And I can even send multiple lines! Awesome.
 """
 
 speaker.talk()
+
+# or
+
+speaker.say("Hello!")
 ```
 
 #### Some informations

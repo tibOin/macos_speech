@@ -1,1 +1,1 @@
-from macos_speech import *
+from .macos_speech import *

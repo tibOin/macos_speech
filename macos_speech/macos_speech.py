@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #~*~ coding: utf-8 ~*~
+
 from subprocess import call, check_output
 
 DELAYCHAR = "[[slnc {duration}]]" # Needs to be formated with miliseconds
@@ -60,14 +61,14 @@ class Synthesizer:
         self._list_voices()
 
         # Init all to None
-        self._voice      = voice
-        self.infile     = infile
-        self.outfile    = outfile
-        self._device     = device
-        self.rate       = rate
-        self.format     = format
-        self.quality    = quality
-        self.text       = text
+        self._voice  = voice
+        self.infile  = infile
+        self.outfile = outfile
+        self._device = device
+        self.rate    = rate
+        self.format  = format
+        self.quality = quality
+        self.text    = text
 
         # Interpret arguments
         if voice:
@@ -119,7 +120,7 @@ class Synthesizer:
         # Requirements
         if self.format:
             if not self.outfile:
-                raise SpeechError('Synthesizer needs a file to output formated data. Please provide via Synthesizer.infile')
+                raise SpeechError('Synthesizer needs a file to output formated data. Please provide via Synthesizer.outfile')
             cmd += ' --file-format=' + self.format.fileformat
             if self.format.dataformat:
                 cmd += ' --data-format=' + self.format.dataformat
@@ -136,7 +137,7 @@ class Synthesizer:
         elif self.text:
             cmd += ' "{your_message_here}"'.format(your_message_here=self.text)
         else:
-            raise SpeechError("Synthesizer is missing text to say... Please provide either via `say(text='your text')`, Synthesiser.text or Synthesiser.infile properties.")
+            raise SpeechError("Synthesizer is missing text to say... Please provide either via `say('your text')`, Synthesiser.text or Synthesiser.infile properties.")
 
         return cmd.split(' ')
 
@@ -174,6 +175,10 @@ class Synthesizer:
 
     def talk(self):
         call(self._prepared_cmd())
+
+    def say(self, text):
+        self.text = text
+        self.talk()
 
 
 if __name__ == '__main__':

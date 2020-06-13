@@ -38,35 +38,35 @@ speaker.talk()
 speaker.say("Hello!")
 ```
 
-#### Some informations
+#### Get informations
 
 ```python
 from macos_speech import Synthesizer
 
 speaker = Synthesizer()
 
-print '''Voices:
+print('''Voices:
 NAME    LANGUAGE    DESCRIPTION
-'''
+''')
 for voice in speaker.voices:
-  print '{} {} {}'.format(voice.name, voice.lang, voice.desc)
+  print('{} {} {}'.format(voice.name, voice.lang, voice.desc))
 
-print ''
+print('')
 
-print 'Audio devices:'
+print('Audio devices:')
 for device in speaker.devices:
-  print 'ID: {}, NAME: {}'.format(device.id, device.name)
+  print('ID: {}, NAME: {}'.format(device.id, device.name))
 
-print ''
+print('')
 
-print '''Output file possible formats:
+print('''Output file possible formats:
 ID    NAME    FILE_EXT    DATA_FORMATS    BIT_RATES
-'''
+''')
 for format in speaker.formats:
-  print '{} {} ({}) [{}] [{}]'.format(format.id, format.name,
+  print('{} {} ({}) [{}] [{}]'.format(format.id, format.name,
                                       ','.join(format.exts),
                                       ','.join(format.formats),
-                                      ','.join(format.bitrates))
+                                      ','.join(format.bitrates)))
 
 ```
 
@@ -103,4 +103,31 @@ synthe.device  # The audio output device           : macos_speech.AudioDevice
 
 synthe.voice   # The voice to use                  : macos_speech.Voice
                #                                   (or 'name' on Python 3)
+```
+
+#### Go Further
+
+```python
+from macos_speech import Synthesiser, AudioFormat
+
+# Speech manipulation:
+# To create more realistic speech you can play on time and rate.
+
+# You can add delays between words by following a simple syntax.
+# Just set the delay by writing time in milliseconds between brackets.
+mytext = 'I want to say... [100] something.'
+
+# And/Or specify a rate in words per minutes to your Synthesiser
+synthe = Synthesiser(voice='Alex', rate=50, text=mytext)
+
+
+# Record to file:
+
+# Basically, setting an outfile with supported extension would be enough to correctly encode the file.
+speaker = Synthesiser(voice='Alex', text='Some text to record', outfile='rec.mp4')
+
+# But you can customize a lot more your output file:
+format  = AudioFormat('3gp2', dataformat='Qclp', bitrate=13000)
+speaker = Synthesiser(voice='Alex', text= "Some text", format=format, outfile='out.3g2')
+
 ```

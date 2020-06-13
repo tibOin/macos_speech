@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 #~*~ coding: utf-8 ~*~
 
+import re
 from subprocess import call, check_output
 
-DELAYCHAR = "[[slnc {duration}]]" # Needs to be formated with miliseconds
+DELAY_STR = "[[slnc {duration}]]" # Needs to be formated with miliseconds
+DELAY_RE   = re.compile(r'(\[(\d+)\])') # compile once the parsing regexp
 
 class SpeechError(Exception):
     def __init__(self, description):
@@ -47,8 +49,8 @@ class AudioFormatDescription(object):
 
 
 class AudioFormat(object):
-    def __init__(self, fileformat, dataformat=None, bitrate=None):
-        self.fileformat = fileformat
+    def __init__(self, id, dataformat=None, bitrate=None):
+        self.id = id
         self.dataformat = dataformat
         self.bitrate    = str(bitrate)
 
@@ -56,25 +58,26 @@ class Synthesizer:
     def __init__(self, voice=None, infile=None, outfile=None, device=None,
                  rate=None, format=None, quality=None, text=None):
 
+        # Extract data from system
         self._list_devices()
         self._list_formats()
         self._list_voices()
 
-        # Init all to None
-        self._voice  = voice
+        # Set user defined properties
         self.infile  = infile
         self.outfile = outfile
-        self._device = device
         self.rate    = rate
         self.format  = format
         self.quality = quality
         self.text    = text
 
-        # Interpret arguments
         if voice:
             for v in self.voices:
                 if voice in v.name:
                     self.voice = v
+        else:
+            self.voice = voice
+
         if device:
             try:
                 int(device)
@@ -85,6 +88,8 @@ class Synthesizer:
                 for dev in self.devices:
                     if device in dev.name:
                         self.device = dev
+        else:
+            self.device = device
 
     def _list_devices(self):
         self.devices = []
@@ -115,13 +120,13 @@ class Synthesizer:
             cmd += ' -a ' + self.device.id
 
         if self.rate:
-            cmd += ' -r ' + self.rate
+            cmd += ' -r ' + str(self.rate)
 
         # Requirements
         if self.format:
             if not self.outfile:
                 raise SpeechError('Synthesizer needs a file to output formated data. Please provide via Synthesizer.outfile')
-            cmd += ' --file-format=' + self.format.fileformat
+            cmd += ' --file-format=' + self.format.id
             if self.format.dataformat:
                 cmd += ' --data-format=' + self.format.dataformat
             if self.format.bitrate:
@@ -141,18 +146,27 @@ class Synthesizer:
 
         return cmd.split(' ')
 
+    def _parse_text(self, text):
+        for match in DELAY_RE.finditer(text):
+            text = text.replace(match.group(1), DELAY_STR.format(duration=match.group(2)))
+        return text
+
+
     @property
     def voice(self):
         return self._voice
 
     @voice.setter
     def voice(self, name):
-        if type(name) == Voice:
-            self._voice = name
+        if name:
+            if type(name) == Voice:
+                self._voice = name
+            else:
+                for voice in self.voices:
+                    if name in voice.name:
+                        self._voice = voice
         else:
-            for voice in self.voices:
-                if name in voice.name:
-                    self._voice = voice
+            self._voice = name
 
     @property
     def device(self):
@@ -160,18 +174,32 @@ class Synthesizer:
 
     @device.setter
     def device(self, string):
-        if type(string) == AudioDevice:
-            self._device = string
+        if string:
+            if type(string) == AudioDevice:
+                self._device = string
+            else:
+                try:
+                    int(string)
+                    for device in self.devices:
+                        if device.id == string:
+                            self._device = device
+                except:
+                    for device in self.devices:
+                        if string in device.name:
+                            self._device = device
         else:
-            try:
-                int(string)
-                for device in self.devices:
-                    if device.id == string:
-                        self._device = device
-            except:
-                for device in self.devices:
-                    if string in device.name:
-                        self._device = device
+            self._device = string
+
+    @property
+    def text(self):
+        return self._text
+
+    @text.setter
+    def text(self, string):
+        if string:
+            self._text = self._parse_text(string)
+        else:
+            self._text = string
 
     def talk(self):
         call(self._prepared_cmd())
@@ -182,5 +210,5 @@ class Synthesizer:
 
 
 if __name__ == '__main__':
-    speaker = Synthesizer(voice='Alex', device='Built-in', text="I'm the Python macos_speech module")
+    speaker = Synthesizer(voice='Alex', text="I'm the Python [50] macos_speech [40] module")
     speaker.talk()

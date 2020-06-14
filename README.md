@@ -26,7 +26,7 @@ from macos_speech import Synthesizer
 
 speaker = Synthesizer(voice='Alex', device='Built-in')
 
-speaker.text = """How my God! I can make my python code to talk!
+speaker.text = """Oh my God! I can make my python code to talk!
 
 And I can even send multiple lines! Awesome.
 """

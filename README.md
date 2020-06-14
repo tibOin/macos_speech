@@ -108,7 +108,7 @@ synthe.voice   # The voice to use                  : macos_speech.Voice
 #### Go Further
 
 ```python
-from macos_speech import Synthesiser, AudioFormat
+from macos_speech import Synthesizer, AudioFormat
 
 # Speech manipulation:
 # To create more realistic speech you can play on time and rate.
@@ -118,16 +118,22 @@ from macos_speech import Synthesiser, AudioFormat
 mytext = 'I want to say... [100] something.'
 
 # And/Or specify a rate in words per minutes to your Synthesiser
-synthe = Synthesiser(voice='Alex', rate=50, text=mytext)
+speaker = Synthesizer(voice='Alex', rate=50, text=mytext)
 
+speaker.talk()
 
 # Record to file:
 
 # Basically, setting an outfile with supported extension would be enough to correctly encode the file.
-speaker = Synthesiser(voice='Alex', text='Some text to record', outfile='rec.mp4')
+# (There are some limitations: setting just 'out.mp4' doesn't work for example)
+speaker = Synthesizer(voice='Alex', text='Some text to record', outfile='out.aac')
+
+speaker.talk()
 
 # But you can customize a lot more your output file:
-format  = AudioFormat('3gp2', dataformat='Qclp', bitrate=13000)
-speaker = Synthesiser(voice='Alex', text= "Some text", format=format, outfile='out.3g2')
+format  = AudioFormat('mp4f', dataformat='alac')
+speaker.format = format
+speaker.outfile = 'out.mp4'
+speaker.talk()
 
 ```
